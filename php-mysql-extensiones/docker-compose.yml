@@ -1,0 +1,30 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: php/Dockerfile
+    image: mi-apache
+    ports:
+      - 80:80
+    volumes:
+      - ./web:/srv/app
+    links:
+      - mysqll     
+    environment:
+      DB_HOST: mysql
+      DB_DATABASE: test
+      DB_USERNAME: user
+      DB_PASSWORD: pass      
+  mysqll:
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mysql:/var/lib/mysql  
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+      MYSQL_ROOT_PASSWORD: pass
+  
