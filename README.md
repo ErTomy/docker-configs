@@ -1,15 +1,13 @@
-# docker-configs
+# Docker usado para Laravel en entorno de desarrollo
+Sistema mínimo, si es necesario instalar algún modulo extra de php se debe añadir en el fichero Dockerfile
 
-Seleccionar la rama según el entorno de trabajo a usar
+### se deben crear las siguientes carpetas:
+* **db-data**: para almacenar de forma permanente los datos del mysql
+* **www**: donde se alojará el código fuente
 
-### comandos habituales de docker
+### ejecutar comandos de composer npm y artisan
 
-| Comando                                   | Función                           |
-|:------------------------------------------|:----------------------------------|
-| docker system prune -a                    | borra los contenedores e imagenes | 
-| docker rm -f $(docker ps -aq) 			| borra todos los contenedores      | 
-| docker network rm $(docker network ls -q) | borra todas las redes             | 
-| docker ps -a					            | listar los contenedores           | 
-| docker rm container_id				    | borrar un contenedor concreto     | 
-| docker image list				            | listar las imagenes disponibles   | 
-| docker rmi image_id				        | borrar una imagen concreta        | 
+* `docker-compose run --rm composer update`
+* `docker-compose run --rm npm run dev`
+* `docker-compose run --rm artisan migrate` 
+
