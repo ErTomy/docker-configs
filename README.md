@@ -1,6 +1,6 @@
 # docker-configs
 
-Configuraciones base de docker que suelo usar en los proyectos 
+Seleccionar la rama según el entorno de trabajo a usar
 
 ### comandos habituales de docker
 
