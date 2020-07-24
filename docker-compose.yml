@@ -1,0 +1,35 @@
+version: '3.3'
+
+networks:
+  drupal:
+
+services:
+  drupal:
+    image: drupal:latest
+    ports:
+      - 80:80
+    volumes:
+      - ./www:/var/www/html      
+    restart: always
+    networks:
+        - drupal
+
+  mysql:
+    image: mysql:5.7.29
+    container_name: mysql
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: drupal
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+      MYSQL_ROOT_PASSWORD: secret
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./db-data:/var/lib/mysql  
+    networks:
+      - drupal
+
