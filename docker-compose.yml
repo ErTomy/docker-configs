@@ -5,7 +5,10 @@ networks:
 
 services:
   drupal:
-    image: drupal:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: drupal  
     ports:
       - 80:80
     volumes:
@@ -14,9 +17,9 @@ services:
     networks:
         - drupal
 
-  mysql:
-    image: mysql:5.7.29
-    container_name: mysql
+  dbdrupal:
+    image: mysql:latest
+    container_name: dbdrupal
     restart: unless-stopped
     tty: true
     ports:
