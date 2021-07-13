@@ -1,0 +1,40 @@
+version: '3'
+
+networks:
+  local:
+
+
+services:
+  mysql:
+    build:
+      context: ./docker/mysql
+      args:
+        mysql_version: ${MYSQL_VERSION}
+    container_name: ${PROJECT_NAME}-mysql    
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
+    restart: always
+    volumes:
+      - ./db-data:/var/lib/mysql
+    networks:
+      - local      
+
+  php:
+    build:
+      context: ./docker/php
+      args:
+        php_version: ${PHP_VERSION}
+    container_name: ${PROJECT_NAME}-php
+    ports:
+      - "80:80"
+    volumes:
+      - ./www:/var/www/html
+    links:
+      - mysql
+    networks:
+      - local  
