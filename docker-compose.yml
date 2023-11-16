@@ -6,7 +6,7 @@ networks:
 services:
   nginx:
     image: nginx:stable-alpine
-    container_name: nginx
+    container_name: ${PROJECT_NAME}-nginx
     ports:
       - "80:80"
     volumes:
@@ -20,7 +20,7 @@ services:
 
   mysql:
     image: mysql:5.7.29
-    container_name: mysql
+    container_name: ${PROJECT_NAME}-mysql
     restart: unless-stopped
     tty: true
     volumes:
@@ -28,10 +28,10 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_DATABASE: homestead
-      MYSQL_USER: homestead
-      MYSQL_PASSWORD: secret
-      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     networks:
@@ -41,7 +41,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: php
+    container_name: ${PROJECT_NAME}-php
     volumes:
       - ./www:/var/www/html
     ports:
@@ -62,7 +62,7 @@ services:
 
   npm:
     image: node:13.7
-    container_name: npm
+    container_name: ${PROJECT_NAME}-npm
     volumes:
       - ./www:/var/www/html
     working_dir: /var/www/html
@@ -72,7 +72,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: artisan
+    container_name: ${PROJECT_NAME}-artisan
     volumes:
       - ./www:/var/www/html
     depends_on:
