@@ -1,38 +1,29 @@
-version: '3.3'
-
-networks:
-  drupal:
-
 services:
   drupal:
     build:
-      context: .
+      context: ./php
       dockerfile: Dockerfile
-    container_name: drupal  
-    ports:
-      - 80:80
     volumes:
-      - ./www:/var/www/html      
-    restart: always
-    networks:
-        - drupal
-
-  dbdrupal:
-    image: mysql:latest
-    container_name: dbdrupal
-    restart: unless-stopped
-    tty: true
+      - ./src:/var/www/html
     ports:
-      - "3306:3306"
+      - "80:80"
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0
     environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: drupal
       MYSQL_USER: user
-      MYSQL_PASSWORD: pass
-      MYSQL_ROOT_PASSWORD: secret
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
+      MYSQL_PASSWORD: password
     volumes:
-      - ./db-data:/var/lib/mysql  
+      - db_data:/var/lib/mysql
     networks:
-      - drupal
+      - app-network
 
+volumes:
+  db_data:
+
+networks:
+  app-network:

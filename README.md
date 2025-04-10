@@ -1,27 +1,26 @@
-# Docker usado para Drupal en entorno de desarrollo
+# Pasos de instalación:
 
-### se deben crear las siguientes carpetas:
-* **db-data**: para almacenar de forma permanente los datos del mysql
-* **www**: donde se alojará el código fuente
+Una vez levantado el contenedor, seguir los siguientes pasos
 
-una vez levantados los contenedores para hacer la instalación de drupal ejecutar el comando
 
-` docker-compose exec drupal composer install`
+1. **Instalar Drupal:**
+   ```bash
+   docker-compose exec drupal composer install
+   ```
 
-y ya se podría acceder desde el navegador a http://localhost para hacer la instalación normalmente
+2. **Crear el archivo de configuración:**
+   ```bash
+   docker-compose exec drupal cp /var/www/html/web/sites/default/default.settings.php /var/www/html/web/sites/default/settings.php
+   docker-compose exec drupal chown www-data:www-data /var/www/html/web/sites/default/settings.php
+   ```
 
-para instalar módulos con el comando drush
+3. **Crear el directorio de traducciones:**
+   ```bash
+   docker-compose exec drupal mkdir -p /var/www/html/web/sites/default/files/translations
+   docker-compose exec drupal chown -R www-data:www-data /var/www/html/web/sites/default/files
+   ```
 
-```shell
-docker-compose exec drupal composer require 'drupal/paragraphs:^1.2'
-docker-compose exec drupal drush en paragraphs
-docker-compose exec drupal drush cr
-```
-
-después de las actualizaciones
-
-```shell
-docker-compose exec drupal drush updatedb
-docker-compose exec drupal drush cache:rebuild
-docker-compose exec drupal drush config:export --diff
-```
+4. **Linkar el comando Drush:**
+   ```bash
+   docker-compose exec drupal ln -s /var/www/html/vendor/bin/drush /usr/local/bin/drush
+   ```
